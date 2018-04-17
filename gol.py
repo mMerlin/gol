@@ -388,32 +388,32 @@ class Gol:
         self.gen_num = 0
         self.display_board()
 
-    def cell_neighbors(self, row, col):
+    def cell_neighbours(self, row, col):
         """
-        get the number of currently living neighbors around the addressed cell
+        get the number of currently living neighbours around the addressed cell
         """
         # ignore wrapping for now … always dead outside the current universe boundary
 
         # with the one time (per generation) preparation, no special edge case
         # checks are needed.  Always safe to access one row and column offset
         # from any valid board cell address
-        neighbors = 0
-        # print ('cell_neighbors of', row, col) # DEBUG
+        neighbours = 0
+        # print ('cell_neighbours of', row, col) # DEBUG
         for b_row in range(row - 1, row + 2):
             # there should be better pythonic way of counting living cells in
             # a slice of a list.  Only with NumPy?
             for b_col in range(col - 1, col + 2):
-                # print ('neighbor', b_row, b_col) # DEBUG
+                # print ('neighbour', b_row, b_col) # DEBUG
                 if self.board[b_row][b_col] == self.LIVING_CELL:
-                    neighbors += 1
-        # neighbors is actually the count of neighbors PLUS the address cell
+                    neighbours += 1
+        # neighbours is actually the count of neighbours PLUS the address cell
         home_cells = 1 if self.board[row][col] == self.LIVING_CELL else 0
 
         # might as well take advantage of needing an explicit check of the target
         # cell, and return a 'living' count for it as well.  The caller needs that
         # anyway
-        return home_cells, neighbors - home_cells
-    # end def cell_neighbors(…)
+        return home_cells, neighbours - home_cells
+    # end def cell_neighbours(…)
 
     def step_generation(self):
         """
@@ -445,12 +445,12 @@ class Gol:
         # Populate after with board plus one generation
         for row in range(self.rows):
             for col in range(self.columns):
-                target, neighbors = self.cell_neighbors(row, col)
+                target, neighbours = self.cell_neighbours(row, col)
                 # target is 0 or 1 when the center cell is dead or alive
-                # neighbors is the number of living neighbors around target
-                # print( 'context', row, col, target, neighbors) # DEBUG
+                # neighbours is the number of living neighbours around target
+                # print( 'context', row, col, target, neighbours) # DEBUG
                 # The simplest logic I have found to determine a living cell
-                if neighbors == 3 or (neighbors + target) == 3:
+                if neighbours == 3 or (neighbours + target) == 3:
                     after[row][col] = self.LIVING_CELL
         # print( after ) # DEBUG
         # print( self.board ) # DEBUG

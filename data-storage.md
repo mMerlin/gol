@@ -45,10 +45,10 @@
 * [Cellular Automaton](http://www.conwaylife.com/wiki/Cellular_automaton)
 * [Cellular Automaton](https://en.wikipedia.org/wiki/Cellular_automaton)
 
-Neighborhood«s», Transitions, System«s», Universe«?», Template«s»
+Neighbourhood«s», Transitions, System«s», Universe«?», Template«s»
 
 * «neighbourhood» family
-  * id, «minimum¦maxium» «radius¦dimensions»
+  * id, «minimum¦maximum» «radius¦dimensions»
   * generic description, history, math expression representing generic neighbourhood
 * neighbourhood
   * id, family id, radius, dimensions
@@ -91,9 +91,9 @@ Fragments
   * object*
 
 
-* Neighborhoods
-  * [Neighborhood](https://en.wikibooks.org/wiki/Cellular_Automata/Neighborhood)
-  * [Neighborhood](http://www.conwaylife.com/wiki/Neighbourhood#Common_dimensions_and_neighborhoods)
+* Neighbourhoods
+  * [Neighbourhood](https://en.wikibooks.org/wiki/Cellular_Automata/Neighborhood)
+  * [Neighbourhood](http://www.conwaylife.com/wiki/Neighbourhood#Common_dimensions_and_neighbourhoods)
   * [gallery](http://www.conwaylife.com/wiki/Gallery_of_neighbourhoods)
   * [Moore](http://www.conwaylife.com/wiki/Moore_neighbourhood)
 
@@ -102,7 +102,7 @@ Fragments
 <cellular-automaton semVersion="«Semantic Version»" «1» xmlns='http://www.cellularautomaton.org/ca'> «?»
   <url>http://semver.org/</url>
   <url>http://www.michaelfcollins3.me/blog/2013/01/23/semantic_versioning_dotnet.html</url>
-  <description>Above url has a regex to match a semantice version string, but it shows a "\." after the patch number, which should not exsit"</description>
+  <description>Above url has a regex to match a semantic version string, but it shows a "\." after the patch number, which should not exist"</description>
   <version>«nonnegint:autoincrement»</version> «1»
   <description>The above version is for the file, and should auto increment each time it is saved. The caVersion attribute is the data file structure version.</description>
   <url>http://www.conwaylife.com/wiki/Cellular_automaton</url>
@@ -115,7 +115,7 @@ Fragments
       <description>
         A more formal definition of neighbourhood is needed.  Something that a program can parse reliably.
       </description>
-      <description>«text description of neighborhood»</description>
+      <description>«text description of neighbourhood»</description>
       <url>https://en.wikibooks.org/wiki/Cellular_Automata/Neighborhood</url>
       <symmetry rotation="4" «?» reflection="yes" «?»/> «?»
     </neighbourhood>
@@ -135,7 +135,7 @@ Fragments
         <extent id="0">
           <limit min="«»" max="«»">
             <wrap>
-              <description>specifiying general case wrapping could be hard</description>
+              <description>specifying general case wrapping could be hard</description>
             </wrap>
           </limit>
         </extent>
@@ -172,7 +172,7 @@ Fragments
 <?xml version="1.0" encoding="UTF-8"?>
 <cellular-automaton semVersion="0.1.0-dev+build.2017.10.26" xmlns='http://www.cellularautomaton.org/'>
   <version>0</version>
-  <purpose>Sample Cellluar Automaton systems</purpose>
+  <purpose>Sample Cellular Automaton systems</purpose>
 
   <neighbourhoods>
     <neighbourhood id="Moore3x3" group="Moore" dimensions="2" range="1">

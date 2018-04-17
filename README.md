@@ -2,7 +2,7 @@
 
 Exploration of a Python implementation of Conway´s Game Of Life
 
-This is not hashlife, but is intended to be a lot more powerful and faster than the typical brute force nested loop generaration calculation.
+This is not hashlife, but is intended to be a lot more powerful and faster than the typical brute force nested loop generation calculation.
 
 This is very incomplete.  It is/was being used to learn about various things.  A little work with the unittest Library.  Creating and validating xml with xsd files.  Working with xml in python.  Using tkinter.  Everything should run, though with minimal functionality.
 
@@ -20,7 +20,7 @@ This is very incomplete.  It is/was being used to learn about various things.  A
       * [xml schema](https://www.w3.org/TR/xmlschema11-1/)
         * [reference](http://www.xmlschemareference.com/)
         * [build in datatypes](https://www.w3.org/TR/xmlschema-2/#built-in-datatypes)
-        * [attribute to attribute validdation](https://stackoverflow.com/questions/20904083/how-can-i-restrict-the-values-of-an-xml-attribute-based-on-attribute-values-in-o)
+        * [attribute to attribute validation](https://stackoverflow.com/questions/20904083/how-can-i-restrict-the-values-of-an-xml-attribute-based-on-attribute-values-in-o)
         * [key,keyref](http://markchensblog.blogspot.ca/2012/11/key-keyref-and-unique-in-xsd.html)
         * [key,keyref constraints](http://www.datypic.com/books/defxmlschema/chapter17.html)
       * ISO RELAX NG
@@ -54,7 +54,7 @@ This will tend to create fewer and larger groups, since fewer cases will be dete
 
 A group is any set of cells that interact with (are neighbours of) each other, but do not interact with other cells.  At least for the next generation.
 
-Start from any single unprocess living cell.
+Start from any single unprocessed living cell.
 * generate the neighbourhood for the cell
 * generate a second neighbourhood for all of the empty cells in the first neighbourhood
 * until no unprocessed living cells in either neighbourhood
@@ -89,9 +89,9 @@ Using python, the empty rows and cells only need to be added at the end.  The ro
 
 ### transformations (rotation and mirror)
 
-There are simple transformation matricies for rotation by multiples of 90 degrees, and for mirror about x and y axis.  This use sin and cos, but at multiples of 90 degrees, the numbers all come out as 0 or 1.  However, in this case it is even simpler to directly manipulate the lists and elements.  A rotate by +90 degrees simply turns rows into columns.  The bottom row becomes the leftmost column.  The second row from the bottom becomes the second column, etc., until the top row becomes the last (right) column.
+There are simple transformation matrices for rotation by multiples of 90 degrees, and for mirror about x and y axis.  This uses sin and cos, but at multiples of 90 degrees, the numbers all come out as 0 or 1.  However, in this case it is even simpler to directly manipulate the lists and elements.  A rotate by +90 degrees simply turns rows into columns.  The bottom row becomes the leftmost column.  The second row from the bottom becomes the second column, etc., until the top row becomes the last (right) column.
 
-Similar operations will rotate by 180 degrees, and mirror vetically and horizontally
+Similar operations will rotate by 180 degrees, and mirror vertically and horizontally
 
 ## Setup
 
@@ -125,8 +125,8 @@ __pycache__
 
 * Create common CellualarAutomaton class to inherit custom versions from
 
-* hash managment class HashTracker
-* non displaying memory/process efficent, dynamic memory block processor
+* hash management class HashTracker
+* non displaying memory/process efficient, dynamic memory block processor
   * history
   * toXml
   * load from file

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  targetNamespace="http://www.cellularautomaton.org/"
+  xmlns="http://www.cellularautomaton.org/"
+  version="0.1.0-dev"
+  xmlns:ca="http://www.cellularautomaton.org/"
+  xml:lang="en-CA"
+>
+
+  <xs:simpleType name="allPI">
+    <xs:annotation><xs:documentation>
+      for max{some positive integer value}
+    </xs:documentation></xs:annotation>
+	<xs:union memberTypes="xs:positiveInteger">
+	  <xs:simpleType>
+	    <xs:restriction base="xs:NMTOKEN">
+		<xs:enumeration value="unbounded"/>
+	    </xs:restriction>
+	  </xs:simpleType>
+	</xs:union>
+  </xs:simpleType>
+
+  <xs:element name="cellular-automaton">
+    <xs:annotation>
+	<xs:documentation source="https://en.wikipedia.org/wiki/Cellular_automaton"/>
+	<xs:documentation source="http://www.conwaylife.com/wiki/Cellular_automaton"/>
+    </xs:annotation>
+    <xs:complexType>
+	<xs:sequence>
+	  <xs:element name="version" type="xs:nonNegativeInteger" minOccurs="0" default="0">
+	    <xs:annotation>
+		<xs:documentation>
+		  Version number for the file, and should auto increment each time it is saved
+		</xs:documentation>
+	    </xs:annotation>
+	  </xs:element>
+	  <xs:element name="purpose" type="xs:string" minOccurs="0"/>
+	  <xs:element name="neighbourhoods" type="neighbourhoodsType" minOccurs="0"/>
+	  <xs:element name="systems" type="systemsType" minOccurs="0"/>
+	</xs:sequence>
+	<xs:attribute name="semVersion" use="required">
+	  <xs:annotation>
+	    <xs:documentation source="http://www.michaelfcollins3.me/blog/2013/01/23/semantic_versioning_dotnet.html">
+		That url has a regex to match a semantic version string, but it shows a "\." after the patch number, which should not exist
+	    </xs:documentation>
+	  </xs:annotation>
+	  <xs:simpleType>
+	    <xs:restriction base="xs:token">
+		<xs:pattern value="(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-([A-Za-z0-9\-\.]+))?(\+([A-Za-z0-9\-\.]+))?"/>
+	    </xs:restriction>
+	  </xs:simpleType>
+	</xs:attribute>
+    </xs:complexType>
+
+    <xs:key name="familyKey">
+      <xs:selector xpath="./ca:neighbourhoods/ca:family"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="neighbourhoodKey">
+      <xs:selector xpath="./ca:neighbourhoods/ca:neighbourhood"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="systemKey">
+      <xs:selector xpath="./ca:systems/ca:system"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+
+    <xs:keyref name="neighbourhoodFamilyRef" refer="familyKey">
+      <xs:selector xpath="./ca:neighbourhoods/ca:neighbourhood"/>
+      <xs:field xpath="@family"/>
+    </xs:keyref>
+    <xs:keyref name="systemNeighbourhoodRef" refer="neighbourhoodKey">
+      <xs:selector xpath="./ca:systems/ca:system"/>
+      <xs:field xpath="@neighbourhood"/>
+    </xs:keyref>
+  </xs:element>
+
+  <xs:complexType name="neighbourhoodsType">
+    <xs:sequence>
+	<xs:element name="family" minOccurs="0" maxOccurs="unbounded">
+	  <xs:annotation><xs:documentation>
+	    Information about a group of related cellular automaton neighbourhoods.
+	    Members is a family will (?typically?) have different radius values.
+	  </xs:documentation></xs:annotation>
+	  <xs:complexType>
+	    <xs:all>
+		<xs:element name="description" type="xs:string" minOccurs="0"/>
+		<xs:element name="history" type="xs:string" minOccurs="0"/>
+	    </xs:all>
+	    <xs:attribute name="id" type="xs:ID" use="required"/>
+	    <xs:attribute name="set" type="xs:string"/>
+	    <xs:attribute name='minRadius' type='xs:positiveInteger' default="1"/>
+	    <xs:attribute name='maxRadius' type='allPI' default="unbounded"/>
+	    <xs:attribute name='minDimensions' type='xs:positiveInteger' default="2"/>
+	    <xs:attribute name='maxDimensions' type='allPI' default="unbounded"/>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="neighbourhood" minOccurs="0" maxOccurs="unbounded">
+	  <xs:annotation>
+	    <xs:documentation source="https://en.wikibooks.org/wiki/Cellular_Automata/Neighborhood"/>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+		<xs:element name="description" type="xs:string" minOccurs="0"/>
+	    </xs:sequence>
+	    <xs:attribute name='id' type='xs:ID' use="required"/>
+	    <xs:attribute name='family' type='xs:IDREF' use="required"/>
+	    <xs:attribute name='radius' type='xs:positiveInteger' default="1"/>
+	    <xs:attribute name='dimensions' type='xs:positiveInteger' default="2"/>
+	  </xs:complexType>
+	</xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="systemsType">
+    <xs:sequence>
+	<xs:element name="system" minOccurs="1" maxOccurs="unbounded">
+	  <xs:complexType>
+	    <xs:all>
+		<xs:element name="test" type="xs:string" minOccurs="0"/>
+	    </xs:all>
+	    <xs:attribute name="id" type="xs:ID" use="required"/>
+	    <xs:attribute name="neighbourhood" type="xs:IDREF" use="required"/>
+	  </xs:complexType>
+	</xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  targetNamespace="http://www.cellularautomaton.org/"
+  xmlns="http://www.cellularautomaton.org/"
+  version="0.1.0-dev"
+  xmlns:ca="http://www.cellularautomaton.org/"
+  xml:lang="en-CA"
+>
+
+  <xs:simpleType name="allPI">
+    <xs:annotation><xs:documentation>
+      for max{some positive integer value}
+    </xs:documentation></xs:annotation>
+	<xs:union memberTypes="xs:positiveInteger">
+	  <xs:simpleType>
+	    <xs:restriction base="xs:NMTOKEN">
+		<xs:enumeration value="unbounded"/>
+	    </xs:restriction>
+	  </xs:simpleType>
+	</xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="PIlist">
+    <xs:annotation><xs:documentation>
+      comma delimited list of positive integer values
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:string">
+	<xs:pattern value="[1-9]\d*(,[1-9]\d*)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NNIlist">
+    <xs:annotation><xs:documentation>
+      comma delimited list of non negative integer values
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:string">
+	<xs:pattern value="\d+(,\d+)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="IVector">
+    <xs:annotation><xs:documentation>
+      comma delimited list of integer values
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:string">
+	<xs:pattern value="[+-]?\d+(,[+-]?\d+)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="blkClass">
+    <xs:restriction base="xs:string">
+	<xs:enumeration value="oscillator"/>
+	<xs:enumeration value="unknown"/>
+	<xs:enumeration value="evolving"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="allFlip">
+    <xs:restriction base="xs:token">
+	<xs:enumeration value="all"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="oneFlip">
+    <xs:restriction base="xs:token">
+	<xs:enumeration value="nf-r0"/>
+	<xs:enumeration value="nf-r1"/>
+	<xs:enumeration value="nf-r2"/>
+	<xs:enumeration value="nf-r3"/>
+	<xs:enumeration value="nf-r4"/>
+	<xs:enumeration value="nf-r5"/>
+	<xs:enumeration value="hf-r0"/>
+	<xs:enumeration value="hf-r1"/>
+	<xs:enumeration value="hf-r2"/>
+	<xs:enumeration value="hf-r3"/>
+	<xs:enumeration value="hf-r4"/>
+	<xs:enumeration value="hf-r5"/>
+	<xs:enumeration value="vf-r0"/>
+	<xs:enumeration value="vf-r1"/>
+	<xs:enumeration value="vf-r2"/>
+	<xs:enumeration value="vf-r3"/>
+	<xs:enumeration value="vf-r4"/>
+	<xs:enumeration value="vf-r5"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="listFlip">
+    <xs:list itemType="oneFlip"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="tstFlip">
+    <xs:restriction base="listFlip">
+	<xs:annotation><xs:documentation>
+	  Trying to find a way to reject duplicate enumerated tokens in the list
+
+neither the editor, or xmllint are handling assertion, which are part of xsd 1.1
+<xs:assertion test='not(matches($v, "(([nhv]f-r\d)(?!.*\2)" ))' />
+does not seem to handle (one or both) negation and match token reference
+<xs:pattern value="(([nhv]f-r\d)(?!.*\2)"/>
+	</xs:documentation></xs:annotation>
+	<xs:minLength value="1"/>
+	<xs:pattern value="([nhv]f-r\d)(\s+[nhv]f-r\d)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="rFlip">
+    <xs:union memberTypes="allFlip tstFlip"/>
+  </xs:simpleType>
+
+  <xs:element name="cellular-automaton">
+    <xs:annotation>
+	<xs:documentation source="https://en.wikipedia.org/wiki/Cellular_automaton"/>
+	<xs:documentation source="http://www.conwaylife.com/wiki/Cellular_automaton"/>
+    </xs:annotation>
+    <xs:complexType>
+	<xs:sequence>
+	  <xs:element name="version" type="xs:nonNegativeInteger" minOccurs="0" default="0">
+	    <xs:annotation>
+		<xs:documentation>
+		  Version number for the file, and should auto increment each time it is saved
+		</xs:documentation>
+	    </xs:annotation>
+	  </xs:element>
+	  <xs:element name="purpose" type="xs:string" minOccurs="0"/>
+	  <xs:element name="neighbourhoods" type="neighbourhoodsType" minOccurs="0">
+<!--
+	    <xs:key name="neighbourhoodKey">
+	      <xs:selector xpath="./ca:neighbourhood"/>
+	      <xs:field xpath="@id"/>
+	    </xs:key>
+-->
+	  </xs:element>
+	  <xs:element name="systems" type="systemsType" minOccurs="0">
+<!--
+	    <xs:key name="systemKey">
+	      <xs:selector xpath="./ca:system"/>
+	      <xs:field xpath="@id"/>
+	    </xs:key>
+-->
+	  </xs:element>
+	  <xs:element name="defined-blocks" type="defBlcksType" minOccurs="0">
+	  </xs:element>
+	</xs:sequence>
+	<xs:attribute name="semVersion" use="required">
+	  <xs:simpleType>
+	    <xs:restriction base="xs:token">
+		<xs:annotation>
+		  <xs:documentation source="http://www.michaelfcollins3.me/blog/2013/01/23/semantic_versioning_dotnet.html">
+		    That url has a regex to match a semantic version string, but it shows a "\." after the patch number, which should not exist
+		  </xs:documentation>
+		</xs:annotation>
+		<xs:pattern value="(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-([A-Za-z0-9\-\.]+))?(\+([A-Za-z0-9\-\.]+))?"/>
+	    </xs:restriction>
+	  </xs:simpleType>
+	</xs:attribute>
+    </xs:complexType>
+
+    <xs:key name="familyKey">
+      <xs:selector xpath="./ca:neighbourhoods/ca:family"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="neighbourhoodKey">
+      <xs:selector xpath="./ca:neighbourhoods/ca:neighbourhood"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="systemKey">
+      <xs:selector xpath="./ca:systems/ca:system"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="blockKey">
+      <xs:selector xpath="./ca:defined-blocks/ca:block"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+<!--
+    <xs:key name="genSeqKey">
+      <xs:selector xpath="./ca:defined-blocks/ca:block/ca:generations/ca:generation"/>
+      <xs:field xpath="@sequence"/>
+    </xs:key>
+-->
+
+    <xs:keyref name="neighbourhoodFamilyRef" refer="familyKey">
+      <xs:selector xpath="./ca:neighbourhoods/ca:neighbourhood"/>
+      <xs:field xpath="@family"/>
+    </xs:keyref>
+    <xs:keyref name="systemNeighbourhoodRef" refer="neighbourhoodKey">
+      <xs:selector xpath="./ca:systems/ca:system"/>
+      <xs:field xpath="@neighbourhood"/>
+    </xs:keyref>
+    <xs:keyref name="blockNeighbourhoodRef" refer="neighbourhoodKey">
+      <xs:selector xpath="./ca:defined-blocks/ca:block/ca:generations"/>
+      <xs:field xpath="@neighbourhood"/>
+    </xs:keyref>
+  </xs:element>
+
+  <xs:complexType name="neighbourhoodsType">
+    <xs:sequence>
+	<xs:element name="family" minOccurs="0" maxOccurs="unbounded">
+	  <xs:annotation><xs:documentation>
+	    Information about a group of related cellular automaton neighbourhoods.
+	    Members of a family will (?typically?) have different radius and/or dimensions values.
+	  </xs:documentation></xs:annotation>
+	  <xs:complexType>
+	    <xs:all>
+		<xs:element name="description" type="xs:string" minOccurs="0"/>
+		<xs:element name="history" type="xs:string" minOccurs="0"/>
+	    </xs:all>
+	    <xs:attribute name="id" type="xs:ID" use="required"/>
+	    <xs:attribute name="set" type="xs:string"/>
+	    <xs:attribute name='minRadius' type='xs:positiveInteger' default="1"/>
+	    <xs:attribute name='maxRadius' type='allPI' default="unbounded"/>
+	    <xs:attribute name='minDimensions' type='xs:positiveInteger' default="2"/>
+	    <xs:attribute name='maxDimensions' type='allPI' default="unbounded"/>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="neighbourhood" minOccurs="0" maxOccurs="unbounded">
+	  <xs:annotation>
+	    <xs:documentation source="https://en.wikibooks.org/wiki/Cellular_Automata/Neighborhood"/>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+		<xs:element name="description" type="xs:string" minOccurs="0"/>
+	    </xs:sequence>
+	    <xs:attribute name='id' type='xs:ID' use="required"/>
+	    <xs:attribute name='family' type='xs:IDREF' use="required"/>
+	    <xs:attribute name='radius' type='xs:positiveInteger' default="1"/>
+	    <xs:attribute name='dimensions' type='xs:positiveInteger' default="2"/>
+	  </xs:complexType>
+	</xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="systemsType">
+    <xs:sequence>
+	<xs:element name="system" minOccurs="1" maxOccurs="unbounded">
+	  <xs:complexType>
+	    <xs:all>
+		<xs:element name="test" type="xs:string" minOccurs="0"/>
+	    </xs:all>
+	    <xs:attribute name="id" type="xs:ID" use="required"/>
+	    <xs:attribute name="neighbourhood" type="xs:IDREF" use="required"/>
+	  </xs:complexType>
+	</xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="defBlcksType">
+    <xs:sequence>
+	<xs:element name="hashes" minOccurs="0">
+	  <xs:complexType>
+	    <xs:all>
+		<xs:element name="hash" minOccurs="1">
+		  <xs:complexType>
+		    <xs:attribute name="key" type="xs:string" use="required"/>
+		  </xs:complexType>
+		</xs:element>
+	    </xs:all>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="block" minOccurs="1" maxOccurs="unbounded">
+	  <xs:complexType>
+	    <xs:all>
+		<xs:element name="generations" minOccurs="0">
+		  <xs:complexType>
+<!-- TODO switch sequence to repeating union of generation and hash -->
+		    <xs:sequence>
+			<xs:element name="generation" minOccurs="1" maxOccurs="unbounded">
+			  <xs:complexType>
+			    <xs:sequence>
+				<xs:element name="representation" minOccurs="1" maxOccurs="unbounded">
+				  <xs:complexType>
+				    <xs:attribute name="vector" type="IVector" default="0,0"/>
+				    <xs:attribute name="extent" type="PIlist" use="required"/>
+				    <xs:attribute name="cell-state" type="NNIlist" use="required"/>
+				    <xs:attribute name="rotateflip" type="rFlip" default="nf-r0"/>
+				    <xs:attribute name="living" type="xs:nonNegativeInteger"/>
+				  </xs:complexType>
+				</xs:element>
+			    </xs:sequence>
+<!-- TODO sequence needs to be unique within parent generations -->
+			    <xs:attribute name="sequence" type="xs:nonNegativeInteger" use="required"/>
+			    <xs:attribute name="living" type="xs:nonNegativeInteger"/>
+			  </xs:complexType>
+			</xs:element>
+		    </xs:sequence>
+		    <xs:attribute name="name" type="xs:string"/>
+		    <xs:attribute name="neighbourhood" type="xs:IDREF" use="required"/>
+		    <xs:attribute name="boundingbox" type="PIlist" use="required"/>
+		    <xs:attribute name="classification" type="blkClass"/>
+		    <xs:attribute name="period" type="xs:nonNegativeInteger"/>
+		    <xs:attribute name="vector" type="IVector" default="0,0"/>
+		  </xs:complexType>
+		</xs:element>
+	    </xs:all>
+	    <xs:attribute name="id" type="xs:ID" use="required"/>
+	    <xs:attribute name="dimensions" type="PIlist" use="required"/>
+	    <xs:attribute name="cell-state" type="NNIlist" use="required"/>
+	  </xs:complexType>
+	</xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

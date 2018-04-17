@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cellular-automaton semVersion="0.1.0-dev+build.2017.10.26" xmlns="http://www.cellularautomaton.org/">
+  <version>0</version>
+  <purpose></purpose>
+  <neighbourhoods>
+    <family id="Moore" set="{x∈ℤn|(Σ0≤i≤n-1|xi|)&lt;r}" minDimensions="2" maxDimensions="unbounded">
+      <history>
+        This neighbourhood is named after Edward F. Moore, one of the pioneers of cellular automata theory.
+      </history>
+      <description>
+        The set of all cells that are orthogonally or diagonally-adjacent to the region of interest (the region of interest itself may or may not be considered part of the Moore neighbourhood, depending on context). For example, the Moore neighbourhood of a single cell consists of the eight cells immediately surrounding it.
+
+        The Moore neighbourhood of a cell can be thought of as the points at a Chebyshev distance of 1 from that cell.
+
+        Naturally extends to higher dimensions, for example forming a 26-cell cubic neighborhood for a cellular automaton in three dimensions. The number of cells in the Moore neighbourhood of a single cell in an n-dimensional cellular automaton is 3n-1.
+
+        Can also be defined with a higher range; that is, so that it captures cells that are further than one cell away from the region of interest. The standard Moore neighbourhood has range 1. The Moore neighbourhood of range 2 is the set of all cells that are orthogonally or diagonally-adjacent to the Moore neighbourhood itself. The Moore neighbourhood of range n can be defined recursively as the set of all cells that are orthogonally or diagonally-adjacent to the Moore neighbourhood of range n-1. The number of cells in the Moore neighbourhood of range n is given by (2n+1)2-1
+      </description>
+    </family>
+    <family id="Mooree"/>
+    <neighbourhood id="base.gol" family="Moore">
+      <description>
+        Standard Conway Game of Life neighbourhood.  2D, radius 1.
+      </description>
+    </neighbourhood>
+    <neighbourhood id="radius2" family="Mooree" radius="2">
+      <description>
+        Standard Conway Game of Life neighbourhood.  2D, radius 1.
+      </description>
+    </neighbourhood>
+  </neighbourhoods>
+  <systems>
+    <system id="conway.gol" neighbourhood="base.gol">
+    </system>
+    <system id="aa" neighbourhood="radius2"/>
+    <system id="bb" neighbourhood="radius2"/>
+  </systems>
+</cellular-automaton>

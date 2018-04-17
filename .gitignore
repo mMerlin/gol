@@ -1,0 +1,7 @@
+# ignore virtualenv and pip files
+bin
+include
+lib
+lib64
+pip-selfcheck.json
+__pycache__

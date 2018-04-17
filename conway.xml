@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cellular-automaton semVersion="0.1.0-dev+build.2017.10.26" xmlns="http://www.cellularautomaton.org/">
+  <version>0</version>
+  <purpose></purpose>
+  <neighbourhoods>
+  </neighbourhoods>
+  <systems>
+    <system id="conway-B3S23" states="2" dimensions="2" neighbourhood="Moore">
+      <name>Game of Life</name>
+      <states>
+        <state id="0" name="dead"/>
+        <state id="1" name="living"/>
+      </states>
+      <dimensions>
+        <extent id="0">
+          <limit min="-INF" max="INF"/>
+        </extent>
+        <extent id="1">
+          <limit min="-INF" max="INF"/>
+        </extent>
+      </dimensions>
+      <neighbourhood name="Moore">
+        <symmetry rotation="4" reflection="yes"/>
+        <neighbours N="{{-1,-1},{0,-1},{1,-1},{-1,0},{0,0}{1,0},{-1,1},{0,1},{1,1}}">
+          <neighbour>NW</neighbour>
+          <neighbour>N</neighbour>
+          <neighbour>NE</neighbour>
+          <neighbour>W</neighbour>
+          <neighbour>C</neighbour>
+          <neighbour>E</neighbour>
+          <neighbour>SW</neighbour>
+          <neighbour>S</neighbour>
+          <neighbour>SE</neighbour>
+        </neighbours>
+      </neighbourhood>
+      <transitions>
+        <transition target="C" cellstate-n="any" cellstate-n1="1">
+          <condition count="3"/>
+        </transition>
+      </transitions>
+    </system>
+    <system>
+      <name id="conwaya">Game of Life</name>
+      <states>
+        <state id="0" name="off"/>
+        <state id="1" name="on"/>
+      </states>
+      <dimensions>
+        <extent id="0">
+          <limit min="-INF" max="INF"/>
+        </extent>
+        <extent id="1">
+          <limit min="-INF" max="INF"/>
+        </extent>
+      </dimensions>
+      <neighbourhood name="von Neumann">
+        <symmetry rotation="4" reflection="yes"/>
+        <neighbours N="{{0,-1},{-1,0},{0,0},{1,0},{0,1}}">
+          <neighbour>N</neighbour>
+          <neighbour>W</neighbour>
+          <neighbour>C</neighbour>
+          <neighbour>E</neighbour>
+          <neighbour>S</neighbour>
+        </neighbours>
+      </neighbourhood>
+      <transitions>
+        <transition cellstate-n="any" cellstate-n1="1"></transition>
+      </transitions>
+    </system>
+  </systems>
+</cellular-automaton>

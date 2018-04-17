@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- module element sequence:
+  There is no fixed order specified for many of the child elements of module
+  To keep things deterministics means complex nesting
+-->
+<!ELEMENT cellular-automaton (version,systems)>
+<!ELEMENT version (#PCDATA)>
+<!ELEMENT systems (system+)>
+<!ELEMENT system (name,states,dimensions,neighbourhood,transitions)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT states (state,state+)>
+<!ELEMENT state (#PCDATA)>
+<!ELEMENT dimensions (extent+)>
+<!ELEMENT extent (limit)>
+<!-- limit element
+  is empty, but http://www.xmlfiles.com/dtd/dtd_elements.asp says that
+  it should be (EMPTY) instead of EMPTY
+-->
+<!ELEMENT limit EMPTY>
+<!ELEMENT neighbourhood EMPTY>
+<!ELEMENT transitions (transition)>
+<!ELEMENT transition (#PCDATA)>
+
+<!ATTLIST cellular-automaton
+  semVersion CDATA #REQUIRED
+  xmlns CDATA #REQUIRED
+>
+<!ATTLIST name
+  id ID #REQUIRED
+>
+<!ATTLIST state
+  id CDATA #REQUIRED
+  name CDATA #IMPLIED
+>
+<!-- limit id attribute
+  Should really be type ID, since it better be unique, but there is not way to
+  specify a unique numeric value
+-->
+<!ATTLIST extent
+  id CDATA #REQUIRED
+>
+<!ATTLIST limit
+  min CDATA #IMPLIED
+  max CDATA #IMPLIED
+>
+<!ATTLIST neighbourhood
+  alias CDATA #IMPLIED
+>
+<!ATTLIST transition
+  cellstate-n CDATA #IMPLIED
+  cellstate-n1 CDATA #REQUIRED
+>

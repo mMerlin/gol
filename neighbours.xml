@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cellular-automaton semVersion="0.1.0-dev+build.2017.10.26" xmlns="http://www.cellularautomaton.org/">
+  <version>0</version>
+  <purpose></purpose>
+  <neighbourhoods>
+    <family id="Moore">Rectangular</family>
+    <neighbourhood family="Moore">
+    </neighbourhood>
+  </neighbourhoods>
+</cellular-automaton>
